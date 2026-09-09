@@ -1,0 +1,120 @@
+use salesdb
+
+--Find each customer's country and product category, and display:
+
+select * from sales.customers
+
+select * from sales.orders
+
+select * from sales.Products
+
+select 
+firstname as customer_name,
+country as customer_country,
+--product as product_name
+Category as product_category
+from sales.customers as c
+left join sales.orders o on c.customerid=o.customerid
+left join  sales.products as p on o.productid= p.productid
+where category is not null
+
+/* Q1. Find each country's total number of customers.
+Display:
+
+Country
+Customer count */
+
+select country, count(*) as tot_cus from sales.customers
+group by country 
+having count(*) > 2
+/*
+. Find departments where the average salary is greater than 60,000.
+
+Display:
+
+Department
+Average salary */
+
+select 
+department,avg(salary) from sales.employees
+where salary>
+(select avg(salary) 
+from sales.employees
+group by department 
+having avg(salary)>60000)
+
+select 
+department,max(salary)as dept_max_salary 
+from sales.employees
+group by department 
+having max(salary)>70000
+
+/*
+Q7. Find product categories where the total sales is greater than 100.
+
+Use:
+
+sales.orders
+sales.products */
+
+select * from sales.employees
+
+select * from sales.orders
+
+select p.category,
+o.sales
+from sales.products as p 
+left join sales.orders as o on o.productid=p.productid
+group by p.category 
+having sum(o.sales)>100
+
+SELECT 
+    p.category,
+    SUM(o.sales) AS total_sales
+FROM sales.products p
+LEFT JOIN sales.orders o
+    ON p.productid = o.productid
+GROUP BY p.category
+HAVING SUM(o.sales) > 100;
+
+/* Level 3 — JOIN + GROUP BY + HAVING
+
+Q8. Find each product category and the total quantity sold.
+Display only categories where total quantity is greater than 3. */
+
+select * from sales.orders
+
+
+select 
+p.category,
+sum(o.quantity) as tot_quantity
+from sales.products p
+left join
+sales.orders o on p.productid=o.productid
+group by p.category 
+having sum(o.quantity)>3
+
+/*
+Q9. Find each salesperson's total sales.
+Display only salespersons whose total sales are greater than 50.
+*/
+
+select * from sales.orders
+
+select 
+salespersonid,
+sum(sales) as tot_sales
+from sales.orders
+group by salespersonid
+having sum(sales) >50
+
+
+
+
+
+
+
+
+
+
+
