@@ -1,0 +1,23 @@
+-- creating views
+
+
+CREATE VIEW  Sales.view_table as (
+		select 
+		o.orderid,
+		o.orderdate,
+		p.productid,
+		p.product,
+		coalesce(c.firstname,'')+' '+coalesce(c.lastname,'') as customername,
+		c.country,
+		coalesce(e.firstname,'')+' '+coalesce(e.lastname,'') as salespersonName,
+		e.department,
+		o.sales,
+		o.quantity
+		from sales.orders o
+		left join sales.products p
+		on p.productid=o.productid
+		left join sales.customers c
+		on c.customerid=o.customerid
+		left join sales.employees e
+		on e.employeeid=o.salespersonid
+)
